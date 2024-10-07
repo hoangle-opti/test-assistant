@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.60",
-    "@assistant-ui/react": "^0.5",
+    "@assistant-ui/react": "^0.5.72",
+    "@assistant-ui/react-ai-sdk": "^0.6.10",
     "@assistant-ui/react-markdown": "^0.2",
+    "@langchain/core": "^0.3.7",
+    "@nanostores/react": "github:ai/react",
+    "ai": "^3.4.9",
     "next": "14.2.11",
     "react": "^18",
     "react-dom": "^18",

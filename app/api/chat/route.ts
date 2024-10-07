@@ -1,16 +1,24 @@
-import { openai } from "@ai-sdk/openai";
-import { getEdgeRuntimeResponse } from "@assistant-ui/react/edge";
-
+import { RemoteRunnable } from "@langchain/core/runnables/remote";
+import type { RunnableConfig } from "@langchain/core/runnables";
+import { streamText, LangChainAdapter, type Message } from "ai";
+ 
 export const maxDuration = 30;
-
-export const POST = async (request: Request) => {
-  const requestData = await request.json();
-
-  return getEdgeRuntimeResponse({
-    options: {
-      model: openai("gpt-4o"),
-    },
-    requestData,
-    abortSignal: request.signal,
+ 
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+ 
+  // TODO replace with your own langserve URL
+  const remoteChain = new RemoteRunnable<
+    { messages: Message },
+    string,
+    RunnableConfig
+  >({
+    url: "<YOUR_LANGSERVE_URL>",
   });
-};
+ 
+  const stream = await remoteChain.stream({
+    messages,
+  });
+ 
+  return LangChainAdapter.toDataStreamResponse(stream);
+}
